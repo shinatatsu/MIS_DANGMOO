@@ -1,0 +1,2 @@
+class KeywordApping < ApplicationRecord
+end

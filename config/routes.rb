@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   get '/dangmoo/request_body', to: 'dangmoo#request_body'
   get '/dangmoo/response_headers', to: 'dangmoo#response_headers'
   get '/dangmoo/response_body', to: 'dangmoo#show_response_body'
+  get '/dangmoo/sent_request', to: 'dangmoo#sent_request'
   post '/dangmoo/webhook', to: 'dangmoo#webhook'
 end

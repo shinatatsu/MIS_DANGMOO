@@ -25,6 +25,12 @@ class DangmooController < ApplicationController
         puts "===這是設定後的response.body:#{response.body}==="
     end
 
+    def sent_request
+        uri = URI('http://localhost:3000/dangmoo/response_body')
+        response = Net::HTTP.get(uri)
+        render plain: response
+    end
+
     def webhook
         head :ok
     end
