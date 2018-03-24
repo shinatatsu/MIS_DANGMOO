@@ -1,4 +1,5 @@
 class DangmooController < ApplicationController
+    protect_from_forgery with: :null_session
     def eat
         # render plain: "痴痴痴"
     end
@@ -27,4 +28,5 @@ class DangmooController < ApplicationController
     def webhook
         head :ok
     end
+
 end
