@@ -1,6 +1,33 @@
 require 'line/bot'
-class DangmooController < ApplicationController
-    protect_from_forgery with: :null_session
+class KamigoController < ApplicationController
+  protect_from_forgery with: :null_session
+
+  def webhook
+    # Line Bot API 物件初始化
+    client = Line::Bot::Client.new { |config|
+      config.channel_secret = 'e55f897882eea3d7a0a3874600e1eeed'
+      config.channel_token = '2nuY4aNLo3XuxA7vQZyLaYnGg77cI5wRJj4IQq1KeB6jIbVGsEbDGDKxkQDjTpdgj524NnFhl4m0aAa3y3gjtE9UcYSceuLs7PYhV8OKLr6Mla+civUW1VGnPtuxxtAnTt/BiFXb/1KqWNQF8+zLDgdB04t89/1O/w1cDnyilFU='
+    }
+    
+    # 取得 reply token
+        reply_token = params['events'][0]['replyToken']
+            p "=====reply_token"
+            p reply_token
+            p "====="
+
+    # 設定回覆訊息
+        message = {
+            type: 'text',
+            text: '好哦～好哦～'
+        }
+
+    # 傳送訊息
+        response = client.reply_message(reply_token, message)
+      
+    # 回應 200
+        head :ok
+    end 
+
     def eat
         # render plain: "痴痴痴"
     end
@@ -31,28 +58,4 @@ class DangmooController < ApplicationController
         response = Net::HTTP.get(uri)
         render plain: response
     end
-
-    def webhook
-        #Line Bot API 物件初始化
-        client = Line::Bot::Client.new{ |config|
-            config.channel_secret = 'e55f897882eea3d7a0a3874600e1eeed'
-            config.channel_token = '2nuY4aNLo3XuxA7vQZyLaYnGg77cI5wRJj4IQq1KeB6jIbVGsEbDGDKxkQDjT
-            pdgj524NnFhl4m0aAa3y3gjtE9UcYSceuLs7PYhV8OKLr6Mla+civUW1VGnPtuxxtAnTt/BiFXb/1KqWNQF8+
-            zLDgdB04t89/1O/w1cDnyilFU='
-        }
-
-        #取得reply token
-        reply_token = params['event'][0]['replyToken']
-
-        #設定回復訊息
-        message = {
-            type: 'text',
-            text: '好哦～好哦～'
-        }   
-
-        # 傳送訊息
-        response = client.reply_message(reply_token, message)
-        head :ok
-    end
-
 end
