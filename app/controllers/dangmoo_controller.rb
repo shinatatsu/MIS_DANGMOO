@@ -20,8 +20,8 @@ end
 
 def keyword_reply(received_text)
     keyword_mapping = {
-        '裸足' => 'Summer'
-        '君名' => '希望'
+      'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
+      '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
     }
 
     #查表
@@ -32,7 +32,7 @@ end
 def reply_to_line(reply_text)
     return nil if reply_text.nil?
     #取得reply token
-    reply_token = params['event'][0]['replyToken']
+    reply_token = params['events'][0]['replyToken']
 
     # 設定回覆訊息
     message = {
@@ -41,49 +41,46 @@ def reply_to_line(reply_text)
     }
 
     #傳送訊息
-        line.reply_message(reply_token,message)
-    end
+    line.reply_message(reply_token,message)
+end
 
     # Line Bot API 物件初始化
-    def line
+def line
         @line ||= Line::Bot::Client.new { |config|
         config.channel_secret = 'e55f897882eea3d7a0a3874600e1eeed'
         config.channel_token = '2nuY4aNLo3XuxA7vQZyLaYnGg77cI5wRJj4IQq1KeB6jIbVGsEbDGDKxkQDjTpdgj524NnFhl4m0aAa3y3gjtE9UcYSceuLs7PYhV8OKLr6Mla+civUW1VGnPtuxxtAnTt/BiFXb/1KqWNQF8+zLDgdB04t89/1O/w1cDnyilFU='
     }
-    end
+end
 
-    def eat
-        render plain: "痴痴痴"
-    end
+def eat
+    render plain: "痴痴痴"
+end
 
-    def request_headers
-        render plain: request.headers.to_h.reject{ |key, value|
-            key.include? '.'
-        }.map{ |key, value|
-            "#{key}: #{value}"
-        }.sort.join("\n")
-    end
+def request_headers
+        render plain: request.headers
+end
 
-    def response_headers
+def response_headers
         response.headers['5566'] = 'QQ'
         render plain: response.headers.to_h.map{ |key, value|
             "#{key}: #{value}"
         }.sort.join("\n")
-    end
+end
 
-    def request_body
+def request_body
         render plain: request.body
-    end
+end
     
-    def show_response_body
+def show_response_body
         puts "===這是設定前的response.body:#{response.body}==="
         render plain: "虎哇花哈哈哈"
         puts "===這是設定後的response.body:#{response.body}==="
-    end
+end
 
-    def sent_request
+def sent_request
         uri = URI('http://localhost:3000/dangmoo/eat')
         http = Net::HTTP.new(uri.host, uri.port)
+  
         http_request = Net::HTTP::Get.new(uri)
         http_response = http.request(http_request)
 
@@ -93,5 +90,5 @@ def reply_to_line(reply_text)
             http_request_class: http_request.class,
             http_response_class: http_response.class
         })
-    end
+end
 end
