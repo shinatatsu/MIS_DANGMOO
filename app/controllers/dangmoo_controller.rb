@@ -9,6 +9,13 @@ def webhook
     #設定回復文字
     reply_text = keyword_reply(received_text) if reply_text.nil?
 
+    #推齊
+    reply_text = echo2(channel_id,received_text) if reply_text.nil?
+
+    #記錄對話
+    save_to_received(channel_id,received_text)
+    save_to_reply(channel_id,reply_text)
+
     # 傳送訊息
     response = reply_to_line(reply_text)
       
@@ -18,20 +25,27 @@ end
 
 #學說話
 def learn(received_text)
-    #如果開頭不是 七瀨七瀨; 就跳出
-    return nil unless received_text[0..4] == '七瀨七瀨;'
+    #如果開頭不是 豆一樣: 就跳出
+    return nil unless received_text[0..4] == '豆一樣:'
 
     received_text = received_text[5..-1]
-    semicolon_index = received_text.index(";")
+    semicolon_index = received_text.index(":")
 
-    #找不到分號就跳出
+    #找不到":"就跳出
     return nil if semicolon_index.nil?
 
     keyword = received_text[0..semicolon_index-1]
     message = received_text[semicolon_index+1..-1]
 
     KeywordApping.create(keyword: keyword,message: message)
-    '好喔~好喔'
+    '了解!'
+end
+
+def channel_id
+    source = params['events'][0]['source']
+    return source['groupId'] unless source['groupId'].nil?
+    return source['roomId'] unless source['roomId'].nil?
+    source['userId']
 end
 
 def received_text
