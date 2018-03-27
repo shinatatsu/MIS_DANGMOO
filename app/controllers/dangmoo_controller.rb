@@ -3,8 +3,11 @@ class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
 
 def webhook
+    #學說話
+    reply_text = learn(received_text)
+
     #設定回復文字
-    reply_text = keyword_reply(received_text)
+    reply_text = keyword_reply(received_text) if reply_text.nil?
 
     # 傳送訊息
     response = reply_to_line(reply_text)
@@ -13,19 +16,36 @@ def webhook
     head :ok
 end
 
+#學說話
+def learn(received_text)
+    #如果開頭不是 七瀨七瀨; 就跳出
+    return nil unless received_text[0..4] == '七瀨七瀨;'
+
+    received_text = received_text[5..-1]
+    semicolon_index = received_text.index(";")
+
+    #找不到分號就跳出
+    return nil if semicolon_index.nil?
+
+    keyword = received_text[0..semicolon_index-1]
+    message = received_text[semicolon_index+1..-1]
+
+    KeywordApping.create(keyword: keyword,message: message)
+    '好喔~好喔'
+end
+
 def received_text
     message = params['events'][0]['message']    
     message['text'] unless message.nil?
 end
 
 def keyword_reply(received_text)
-    keyword_mapping = {
-      'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
-      '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
-    }
-
-    #查表
-    keyword_mapping[received_text]
+    mapping = KeywordApping.where(keyword: received_text).last
+    if mapping.nil?
+        nil
+    else
+        mapping.message
+    end
 end
 
     #傳送訊息到Line
