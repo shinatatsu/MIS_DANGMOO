@@ -26,9 +26,9 @@ end
 #學說話
 def learn(received_text)
     #如果開頭不是 豆一樣; 就跳出
-    return nil unless received_text[0..4] == '豆一樣;'
+    return nil unless received_text[0..3] == '豆一樣;'
 
-    received_text = received_text[5..-1]
+    received_text = received_text[4..-1]
     semicolon_index = received_text.index(";")
 
     #找不到分號就跳出
@@ -43,9 +43,7 @@ end
 
 def channel_id
     source = params['events'][0]['source']
-    return source['groupId'] unless source['groupId'].nil?
-    return source['roomId'] unless source['roomId'].nil?
-    source['userId']
+    source['groupId'] || source['roomId'] || source['userId']
 end
 
 def save_to_received(channel_id,received_text)
@@ -56,6 +54,18 @@ end
 def save_to_reply(channel_id, reply_text)
     return if reply_text.nil?
     Reply.create(channel_id: channel_id, text: reply_text)
+end
+
+def echo2(channel_id, received_text)
+    # 如果在 channel_id 最近沒人講過 received_text，卡米狗就不回應
+    recent_received_texts = Received.where(channel_id: channel_id).last(5)&.pluck(:text)
+    return nil unless received_text.in? recent_received_texts
+    
+    # 如果在 channel_id 卡米狗上一句回應是 received_text，卡米狗就不回應
+    last_reply_text = Reply.where(channel_id: channel_id).last&.text
+    return nil if last_reply_text == received_text
+
+    received_text
 end
 
 def received_text
