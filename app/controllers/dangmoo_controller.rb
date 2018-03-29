@@ -25,13 +25,13 @@ end
 
 #學說話
 def learn(received_text)
-    #如果開頭不是 豆一樣: 就跳出
-    return nil unless received_text[0..4] == '豆一樣:'
+    #如果開頭不是 豆一樣; 就跳出
+    return nil unless received_text[0..4] == '豆一樣;'
 
     received_text = received_text[5..-1]
-    semicolon_index = received_text.index(":")
+    semicolon_index = received_text.index(";")
 
-    #找不到":"就跳出
+    #找不到分號就跳出
     return nil if semicolon_index.nil?
 
     keyword = received_text[0..semicolon_index-1]
@@ -46,6 +46,16 @@ def channel_id
     return source['groupId'] unless source['groupId'].nil?
     return source['roomId'] unless source['roomId'].nil?
     source['userId']
+end
+
+def save_to_received(channel_id,received_text)
+    return if received_text.nil?
+    Received.create(channel_id: channel_id, text: received_text)
+end
+
+def save_to_reply(channel_id, reply_text)
+    return if reply_text.nil?
+    Reply.create(channel_id: channel_id, text: reply_text)
 end
 
 def received_text
