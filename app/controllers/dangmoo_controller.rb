@@ -4,7 +4,7 @@ class DangmooController < ApplicationController
 
 def webhook
     #學說話
-    reply_text = learn(received_text)
+    reply_text = room(received_text)
 
     #設定回復文字
     reply_text = keyword_reply(received_text) if reply_text.nil?
@@ -24,10 +24,11 @@ def webhook
 end
 
 #學說話
-def learn(received_text)
-    #如果開頭不是 豆一樣; 就跳出
+def room(received_text)
+    #如果開頭不是 ; 就跳出
     return nil unless received_text[0] == ';'
 
+    #擷取房號
     roomid = received_text[1..-1]
     # semicolon_index = received_text.index(";")
 
@@ -38,26 +39,10 @@ def learn(received_text)
     # message = received_text[semicolon_index+1..-1]
 
     #KeywordApping.create(keyword: keyword,message: message)
+    #將房號存入
     RoomId.create(roomid: roomid)
-    '了解!'
+    '登入成功!請輸入彈幕'
 end
-
-#存Roomid
-# def RoomId(received_text)
-#     #如果開頭即結尾不是";" 跳出
-#     if(received_text[0] == ';')
-#         roomid = received_text[1..-1]
-#         RoomId.create(roomid: roomid)
-#         reply_token = params['event'][0]['replyToken']
-#         message = {
-#             type = 'text',
-#             text = '登入成功，請輸入文字'
-#         }
-#         line.reply_message(reply_token,message)
-#     else
-#         return nil
-#     end
-# end
 
 def channel_id
     source = params['events'][0]['source']
