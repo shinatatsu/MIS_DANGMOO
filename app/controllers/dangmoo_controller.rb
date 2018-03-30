@@ -53,7 +53,7 @@ def save_dangmoo(received_text)
     else
         dangmoo = received_text;
     end
-    Dangmoo.create(room,dangmoo)
+    Dangmoo.create(reply_text,dangmoo)
 end
 
 def channel_id
