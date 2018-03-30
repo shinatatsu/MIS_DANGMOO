@@ -26,18 +26,19 @@ end
 #學說話
 def learn(received_text)
     #如果開頭不是 豆一樣; 就跳出
-    return nil unless received_text[0..3] == '豆一樣;'
+    return nil unless received_text[0] == ';'
 
-    received_text = received_text[4..-1]
-    semicolon_index = received_text.index(";")
+    roomid = received_text[1..-1]
+    # semicolon_index = received_text.index(";")
 
     #找不到分號就跳出
-    return nil if semicolon_index.nil?
+    # return nil if semicolon_index.nil?
 
-    keyword = received_text[0..semicolon_index-1]
-    message = received_text[semicolon_index+1..-1]
+    # keyword = received_text[0..semicolon_index-1]
+    # message = received_text[semicolon_index+1..-1]
 
-    KeywordApping.create(keyword: keyword,message: message)
+    #KeywordApping.create(keyword: keyword,message: message)
+    RoomId.create(roomid: roomid)
     '了解!'
 end
 
