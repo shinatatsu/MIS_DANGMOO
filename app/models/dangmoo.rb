@@ -1,0 +1,2 @@
+class Dangmoo < ApplicationRecord
+end

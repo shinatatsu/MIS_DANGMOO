@@ -15,6 +15,7 @@ def webhook
     #記錄對話
     save_to_received(channel_id,received_text)
     save_to_reply(channel_id,reply_text)
+    save_dangmoo(received_text)
 
     # 傳送訊息
     response = reply_to_line(reply_text)
@@ -42,6 +43,17 @@ def room(received_text)
     #將房號存入
     RoomId.create(roomid: roomid)
     '登入成功!請輸入彈幕'
+    return roomid
+end
+
+def save_dangmoo(received_text)
+    return if received_text.nil?
+    if received_text[0] == ';'
+        return nil
+    else
+        dangmoo = received_text;
+    end
+    Dangmoo.create(room,dangmoo)
 end
 
 def channel_id
