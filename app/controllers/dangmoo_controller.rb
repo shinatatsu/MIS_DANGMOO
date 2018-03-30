@@ -4,7 +4,7 @@ class DangmooController < ApplicationController
 
 def webhook
     #學說話
-    reply_text = RoomId(received_text)
+    reply_text = learn(received_text)
 
     #設定回復文字
     reply_text = keyword_reply(received_text) if reply_text.nil?
