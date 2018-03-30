@@ -42,21 +42,21 @@ def learn(received_text)
 end
 
 #存Roomid
-def RoomId(received_text)
-    #如果開頭即結尾不是";" 跳出
-    if(received_text[0] == ';')
-        roomid = received_text[1..-1]
-        RoomId.create(roomid: roomid)
-        reply_token = params['event'][0]['replyToken']
-        message = {
-            type = 'text',
-            text = '登入成功，請輸入文字'
-        }
-        line.reply_message(reply_token,message)
-    else
-        return nil
-    end
-end
+# def RoomId(received_text)
+#     #如果開頭即結尾不是";" 跳出
+#     if(received_text[0] == ';')
+#         roomid = received_text[1..-1]
+#         RoomId.create(roomid: roomid)
+#         reply_token = params['event'][0]['replyToken']
+#         message = {
+#             type = 'text',
+#             text = '登入成功，請輸入文字'
+#         }
+#         line.reply_message(reply_token,message)
+#     else
+#         return nil
+#     end
+# end
 
 def channel_id
     source = params['events'][0]['source']
