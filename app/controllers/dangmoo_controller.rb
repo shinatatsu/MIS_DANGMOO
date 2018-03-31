@@ -23,7 +23,7 @@ def webhook
 end
 
 #擷取房號
-def room_id(received_text)
+def room(received_text)
     #如果開頭不是 ; 就跳出
     return nil unless received_text[0] == ';'
 
