@@ -13,7 +13,7 @@ def webhook
     #記錄對話
     save_to_received(channel_id,received_text)
     save_to_reply(channel_id,reply_text)
-    save_dangmoo(room_id,received_text)
+    save_dangmoo(received_text)
 
     # 傳送訊息
     response = reply_to_line(reply_text)
