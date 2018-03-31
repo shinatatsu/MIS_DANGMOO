@@ -1,7 +1,7 @@
 require 'line/bot'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
-  $roomid
+  $roomid_p
 
 def webhook
     #學說話
@@ -54,11 +54,12 @@ def save_dangmoo(received_text)
     #如果開頭為";" 則跳出
     if received_text[0] == ';'
         roomid = received_text[1..-1]
+        $roomid_p = roomid
         '登入成功!請輸入彈幕'
     else
         dangmoo = received_text;
     end
-    Dangmoo.create(roomid: roomid,dangmoo: dangmoo)
+    Dangmoo.create(roomid: $roomid_p,dangmoo: dangmoo)
 end
 
 def channel_id
