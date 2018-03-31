@@ -59,9 +59,8 @@ def save_dangmoo(received_text)
         reply_token = params['events'][0]['replyToken']
     # 設定回覆訊息
         message = {
-            type:"message",
-            label:"請開始輸入彈幕"
-            text: '輸入彈幕'
+            type: 'text',
+            text: '請開始輸入彈幕'
         }
     #傳送訊息
         line.reply_message(reply_token,message)
