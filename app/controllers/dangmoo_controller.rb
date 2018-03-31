@@ -55,6 +55,15 @@ def save_dangmoo(received_text)
     if received_text[0] == ';'
         roomid = received_text[1..-1]
         $roomid_p = roomid
+
+        reply_token = params['events'][0]['replyToken']
+    # 設定回覆訊息
+        message = {
+            type: 'text',
+            text: '請開始輸入彈幕'
+        }
+    #傳送訊息
+        line.reply_message(reply_token,message)
     else
         dangmoo = received_text;
     end
