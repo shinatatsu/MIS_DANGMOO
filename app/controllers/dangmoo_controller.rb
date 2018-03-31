@@ -1,6 +1,7 @@
 require 'line/bot'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
+  $roomid
 
 def webhook
     #學說話
