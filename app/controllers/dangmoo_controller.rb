@@ -1,10 +1,9 @@
 require 'line/bot'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
-  $roomid_p
+  $roomid_p         #全域變數儲存房號
 
 def webhook
-    #學說話
     # room_id = room(received_text)
     reply_text = room(received_text)
 
@@ -15,6 +14,7 @@ def webhook
     save_to_received(channel_id,received_text)
     save_to_reply(channel_id,reply_text)
 
+    #儲存彈幕和房號
     save_dangmoo(received_text)
 
     # 傳送訊息
@@ -24,7 +24,7 @@ def webhook
     head :ok
 end
 
-#擷取房號
+
 def room(received_text)
     #如果開頭不是 ; 就跳出
     return nil unless received_text[0] == ';'
@@ -55,7 +55,6 @@ def save_dangmoo(received_text)
     if received_text[0] == ';'
         roomid = received_text[1..-1]
         $roomid_p = roomid
-        '登入成功!請輸入彈幕'
     else
         dangmoo = received_text;
     end
@@ -108,7 +107,7 @@ def reply_to_line(reply_text)
     }
 
     #傳送訊息
-    line.reply_message(reply_token,message)
+    #line.reply_message(reply_token,message)
 end
 
     # Line Bot API 物件初始化
