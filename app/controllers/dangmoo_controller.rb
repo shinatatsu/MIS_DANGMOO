@@ -4,18 +4,16 @@ class DangmooController < ApplicationController
 
 def webhook
     #學說話
-    reply_text = room(received_text)
+    room_id = room(received_text)
 
-    #設定回復文字
-    reply_text = keyword_reply(received_text) if reply_text.nil?
 
-    #推齊
-    reply_text = echo2(channel_id,received_text) if reply_text.nil?
+    # #設定回復文字
+    # reply_text = keyword_reply(received_text) if reply_text.nil?
 
     #記錄對話
     save_to_received(channel_id,received_text)
     save_to_reply(channel_id,reply_text)
-    save_dangmoo(received_text)
+    save_dangmoo(room_id,received_text)
 
     # 傳送訊息
     response = reply_to_line(reply_text)
@@ -24,8 +22,8 @@ def webhook
     head :ok
 end
 
-#學說話
-def room(received_text)
+#擷取房號
+def room_id(received_text)
     #如果開頭不是 ; 就跳出
     return nil unless received_text[0] == ';'
 
@@ -41,19 +39,20 @@ def room(received_text)
 
     #KeywordApping.create(keyword: keyword,message: message)
     #將房號存入
+
     RoomId.create(roomid: roomid)
     '登入成功!請輸入彈幕'
     return roomid
 end
 
-def save_dangmoo(received_text)
+def save_dangmoo(room_id,received_text)
     return if received_text.nil?
     if received_text[0] == ';'
         return nil
     else
         dangmoo = received_text;
     end
-    Dangmoo.create(reply_text,dangmoo)
+    Dangmoo.create(room_id,dangmoo)
 end
 
 def channel_id
@@ -71,18 +70,6 @@ def save_to_reply(channel_id, reply_text)
     Reply.create(channel_id: channel_id, text: reply_text)
 end
 
-def echo2(channel_id, received_text)
-    # 如果在 channel_id 最近沒人講過 received_text，卡米狗就不回應
-    recent_received_texts = Received.where(channel_id: channel_id).last(5)&.pluck(:text)
-    return nil unless received_text.in? recent_received_texts
-    
-    # 如果在 channel_id 卡米狗上一句回應是 received_text，卡米狗就不回應
-    last_reply_text = Reply.where(channel_id: channel_id).last&.text
-    return nil if last_reply_text == received_text
-
-    received_text
-end
-
 def received_text
     message = params['events'][0]['message']
     if message.nil?
@@ -92,14 +79,14 @@ def received_text
     end
 end
 
-def keyword_reply(received_text)
-    mapping = KeywordApping.where(keyword: received_text).last
-    if mapping.nil?
-        nil
-    else
-        mapping.message
-    end
-end
+# def keyword_reply(received_text)
+#     mapping = KeywordApping.where(keyword: received_text).last
+#     if mapping.nil?
+#         nil
+#     else
+#         mapping.message
+#     end
+# end
 
     #傳送訊息到Line
 def reply_to_line(reply_text)
