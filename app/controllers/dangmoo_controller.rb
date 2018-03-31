@@ -5,8 +5,7 @@ class DangmooController < ApplicationController
 def webhook
     #學說話
     # room_id = room(received_text)
-    #reply_text = room(received_text)
-    reply_text = save_dangmoo(received_text)
+    reply_text = room(received_text)
 
     # #設定回復文字
     # reply_text = keyword_reply(received_text) if reply_text.nil?
@@ -14,6 +13,8 @@ def webhook
     #記錄對話
     save_to_received(channel_id,received_text)
     save_to_reply(channel_id,reply_text)
+
+    save_dangmoo(received_text)
 
     # 傳送訊息
     response = reply_to_line(reply_text)
@@ -23,27 +24,27 @@ def webhook
 end
 
 #擷取房號
-# def room(received_text)
-#     #如果開頭不是 ; 就跳出
-#     return nil unless received_text[0] == ';'
+def room(received_text)
+    #如果開頭不是 ; 就跳出
+    return nil unless received_text[0] == ';'
 
-#     #擷取房號
-#     roomid = received_text[1..-1]
-#     # semicolon_index = received_text.index(";")
+    #擷取房號
+    roomid = received_text[1..-1]
+    # semicolon_index = received_text.index(";")
 
-#     #找不到分號就跳出
-#     # return nil if semicolon_index.nil?
+    #找不到分號就跳出
+    # return nil if semicolon_index.nil?
 
-#     # keyword = received_text[0..semicolon_index-1]
-#     # message = received_text[semicolon_index+1..-1]
+    # keyword = received_text[0..semicolon_index-1]
+    # message = received_text[semicolon_index+1..-1]
 
-#     #KeywordApping.create(keyword: keyword,message: message)
-#     #將房號存入
+    #KeywordApping.create(keyword: keyword,message: message)
+    #將房號存入
 
-#     RoomId.create(roomid: roomid)
-#     '登入成功!請輸入彈幕'
-#     return roomid
-# end
+    RoomId.create(roomid: roomid)
+    '登入成功!請輸入彈幕'
+    return roomid
+end
 
 #將房號與收到的訊息帶入並存入
 def save_dangmoo(received_text)
@@ -56,7 +57,7 @@ def save_dangmoo(received_text)
     else
         dangmoo = received_text;
     end
-    Dangmoo.create(roomid,dangmoo)
+    Dangmoo.create(roomid: roomid,dangmoo: dangmoo)
 end
 
 def channel_id
