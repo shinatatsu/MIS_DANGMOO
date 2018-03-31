@@ -45,8 +45,11 @@ def room(received_text)
     return roomid
 end
 
-def save_dangmoo(room_id,received_text)
+#將房號與收到的訊息帶入並存入
+def save_dangmoo(received_text)
     return if received_text.nil?
+
+    #如果開頭為";" 則跳出
     if received_text[0] == ';'
         return nil
     else
