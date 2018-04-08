@@ -7,10 +7,6 @@ def webhook
     # room_id = room(received_text)
     reply_text = room(received_text)
 
-    #記錄對話
-    save_to_received(channel_id,received_text)
-    save_to_reply(channel_id,reply_text)
-
     #儲存彈幕和房號
     save_dangmoo(received_text)
 
