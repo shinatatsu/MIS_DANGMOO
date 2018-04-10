@@ -1,6 +1,5 @@
-$LOAD_PATH << '.'
 require 'line/bot'
-require 'line_license.rb'
+require_relative 'C:\彈幕測試\line_license.rb'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
   $roomid_p         #全域變數儲存房號
