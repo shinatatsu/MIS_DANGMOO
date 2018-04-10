@@ -2,6 +2,7 @@ require 'line/bot'
 require_relative 'line_license'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
+  include License
   $roomid_p         #全域變數儲存房號
 
 def webhook
@@ -92,7 +93,6 @@ def reply_to_line(reply_text)
     #傳送訊息
     #line.reply_message(reply_token,message)
 end
-
     # Line Bot API 物件初始化
 def line
         @line ||= Line::Bot::Client.new { |config|
