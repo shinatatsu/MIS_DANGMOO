@@ -8,7 +8,7 @@ class DangmooController < ApplicationController
 
 def webhook
     # room_id = room(received_text)
-    send_message()
+    #send_message()
     reply_text = room(received_text)
 
     #儲存彈幕和房號
@@ -21,14 +21,14 @@ def webhook
     head :ok
 end
 
-def send_message()
-    message = {
-        type: "text",
-        text: '請輸入房號'
-    }
-    reply_token = params['events'][0]['replyToken']
-    line.reply_message(reply_token, message)
-end
+# def send_message()
+#     message = {
+#         type: "text",
+#         text: '請輸入房號'
+#     }
+#     reply_token = params['events'][0]['replyToken']
+#     line.reply_message(reply_token, message)
+# end
 
 def room(received_text)
     #如果開頭不是 ; 就跳出
