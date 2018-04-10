@@ -1,6 +1,5 @@
-$LOAD_PATH.unshift(File.dirname('C:\彈幕測試\line_license.rb'))
 require 'line/bot'
-require 'line_license.rb'
+require './line_license'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
   $roomid_p         #全域變數儲存房號
