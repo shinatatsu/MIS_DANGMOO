@@ -22,7 +22,7 @@ end
 
 def send_message()
     message = {
-        type: "text"
+        type: "text",
         text: '請輸入房號'
     }
     reply_token = params['events'][0]['replyToken']
