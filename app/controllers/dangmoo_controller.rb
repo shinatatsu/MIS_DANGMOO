@@ -101,3 +101,4 @@ def line
         config.channel_token = License.channel_token
     }
 end
+end
