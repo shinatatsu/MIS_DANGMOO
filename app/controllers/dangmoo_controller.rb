@@ -1,5 +1,5 @@
 require 'line/bot'
-require './line_license'
+require_relative 'line_license'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
   $roomid_p         #全域變數儲存房號
