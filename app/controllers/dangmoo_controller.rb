@@ -1,10 +1,13 @@
+$LOAD_PATH << '.'
 require 'line/bot'
+require 'line_license.rb'
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
   $roomid_p         #全域變數儲存房號
 
 def webhook
     # room_id = room(received_text)
+    send_message()
     reply_text = room(received_text)
 
     #儲存彈幕和房號
@@ -17,6 +20,14 @@ def webhook
     head :ok
 end
 
+def send_message()
+    message = {
+        type: "text"
+        text: '請輸入房號'
+    }
+    reply_token = params['events'][0]['replyToken']
+    line.reply_message(reply_token, message)
+end
 
 def room(received_text)
     #如果開頭不是 ; 就跳出
@@ -58,16 +69,6 @@ def channel_id
     source['groupId'] || source['roomId'] || source['userId']
 end
 
-# def save_to_received(channel_id,received_text)
-#     return if received_text.nil?
-#     Received.create(channel_id: channel_id, text: received_text)
-# end
-
-# def save_to_reply(channel_id, reply_text)
-#     return if reply_text.nil?
-#     Reply.create(channel_id: channel_id, text: reply_text)
-end
-
 def received_text
     message = params['events'][0]['message']
     if message.nil?
@@ -96,7 +97,7 @@ end
     # Line Bot API 物件初始化
 def line
         @line ||= Line::Bot::Client.new { |config|
-        config.channel_secret = 'e55f897882eea3d7a0a3874600e1eeed'
-        config.channel_token = '2nuY4aNLo3XuxA7vQZyLaYnGg77cI5wRJj4IQq1KeB6jIbVGsEbDGDKxkQDjTpdgj524NnFhl4m0aAa3y3gjtE9UcYSceuLs7PYhV8OKLr6Mla+civUW1VGnPtuxxtAnTt/BiFXb/1KqWNQF8+zLDgdB04t89/1O/w1cDnyilFU='
+        config.channel_secret = License.channel_secret
+        config.channel_token = License.channel_token
     }
 end
