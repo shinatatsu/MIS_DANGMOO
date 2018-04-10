@@ -1,5 +1,6 @@
+$LOAD_PATH << '.'
 require 'line/bot'
-require_relative 'line_license'
+require "line_license"
 class DangmooController < ApplicationController
   protect_from_forgery with: :null_session
   include License
@@ -96,8 +97,8 @@ end
     # Line Bot API 物件初始化
 def line
         @line ||= Line::Bot::Client.new { |config|
-        config.channel_secret = License::secret
-        config.channel_token = License::token
+        config.channel_secret = License::Secret
+        config.channel_token = License::Token
     }
 end
 end
