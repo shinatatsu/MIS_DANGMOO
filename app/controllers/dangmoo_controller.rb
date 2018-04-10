@@ -96,8 +96,8 @@ end
     # Line Bot API 物件初始化
 def line
         @line ||= Line::Bot::Client.new { |config|
-        config.channel_secret = License::channel_secret
-        config.channel_token = License::channel_token
+        config.channel_secret = License::secret
+        config.channel_token = License::token
     }
 end
 end
